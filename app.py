@@ -4,9 +4,15 @@ import time
 import streamlit as st
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
+if "OPENROUTER_API_KEY" in st.secrets:
+    os.environ["OPENROUTER_API_KEY"] = st.secrets["OPENROUTER_API_KEY"]
+
 if not os.environ.get("OPENROUTER_API_KEY"):
-    raise EnvironmentError("OPENROUTER_API_KEY not found in environment variables.")
+    st.error("OPENROUTER_API_KEY is missing. Add it in Streamlit Secrets.")
+    st.stop()
 
 from llm import create_llm, invoke_with_retry
 
